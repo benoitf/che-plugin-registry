@@ -13,12 +13,11 @@ jobs:
       with:
         # Buildx version. Example: v0.3.0
         version: latest
-    # ,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
     - name: For each platform, build
       run: |
         docker login -u "${QUAY_USERNAME}" -p "${QUAY_PASSWORD}" quay.io
         docker buildx ls
-        docker buildx build --platform linux/amd64,linux/arm64 -t "quay.io/fbenoit/che-plugin-registry" --push --file ./build/dockerfiles/Dockerfile --target registry . 
+        docker buildx build --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 -t "quay.io/fbenoit/che-plugin-registry" --push --file ./build/dockerfiles/Dockerfile --target registry . 
         docker images
       env:
         QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
