@@ -13,12 +13,14 @@ jobs:
       with:
         # Buildx version. Example: v0.3.0
         version: latest
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
     - name: For each platform, build
       run: |
         echo this is echo
         ls -la
         docker buildx ls
-        docker buildx build --platform linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 -t "che-plugin-registry" -f ./build/dockerfiles/${DOCKERFILE} --target registry . 
+        docker buildx build --platform linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 -t "che-plugin-registry" --file ./build/dockerfiles/Dockerfile --output "type=image,push=false" --target registry . 
         docker images
         docker inspect "che-plugin-registry:latest"
         
